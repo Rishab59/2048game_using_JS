@@ -1,8 +1,10 @@
-<!DOctype html>
+<!DOCTYPE html>
 
 <!--
     Author       :  Rishab.H
-    Description  :  * This code is a 2048 game designed specially for playing in PC.
+    Description  :  
+                    * This code is a 2048 game designed for playing in PC or Moblie.
+                    * If the device is Mobile then direction buttons are automatically added based on the screen width and height.
                     * The bug in this is that it cannot detect that the game is over(i.e no more possible moves). 
 -->
 
@@ -14,7 +16,7 @@
         <meta name = "viewport" content="width=device-width, initial-scale=1.0">
         <meta charset = "UTF-8">
         
-        <!-- CSS Code Starts -->
+        <!-- CSS Code -->
         <style>
             
             body
@@ -28,13 +30,6 @@
                 font-weight : bolder ;
                 font-style : italic ;
                 text-decoration :  underline dotted red  ;
-            }
-            h2
-            {
-                font-weight : bold ;
-                font-size : 30px ;
-                font-style : italic ;
-                text-decoration : underline dotted brown ;
             }
             hr
             {
@@ -117,14 +112,23 @@
                 background-color : brown ;
                 color : white ;
             }
+            .icons
+            {
+                height : 30px ;
+                width : 30px ;
+                padding : 5px ;
+            }
+            button
+            {
+                background-color : white ;
+            }
 
         </style>
 
-        <!-- JavaScript Code Starts -->
+        <!-- JavaScript Code -->
         <script>
  
             var board ;
-            var score = 0 ;
             var rows = 4 ;
             var columns = 4 ;
             
@@ -136,6 +140,7 @@
 
             function setGame()
             {
+                
                 board = [
                     [0,0,0,0],
                     [0,0,0,0],
@@ -189,32 +194,75 @@
                 }
             }
             
+
+            function device_checking()
+            {
+                
+                /* IMPORTANT PART OF THIS CODE */
+                if(window.innerWidth < window.innerHeight) /* Mobile, Tablets, etc... */
+                {
+                    document.write("<button onclick = 'movedUp()'><img src = '../Icons/Up_arrow_symbol.jpg' class = 'icons' '></button><br>") ;
+                    document.write("<button onclick = 'movedLeft()'><img src = '../Icons/Left_arrow_symbol.jpg' class = 'icons' ></button> &nbsp") ;
+                    document.write("<button onclick = 'movedDown()'><img src = '../Icons/Down_arrow_symbol.jpg' class = 'icons' '></button> &nbsp") ;
+                    document.write("<button onclick = 'movedRight()'><img src = '../Icons/Right_arrow_symbol.jpg' class = 'icons' ></button>") ; 
+                    
+                    /*
+                     * nbsp is used to give spaces between (left and down button) and (down and right button). 
+                     */
+                }
+
+                else /* PC, Laptop, etc.. */
+                {
+                    document.addEventListener("keyup", (e) =>{
+                        if(e.code == "ArrowLeft")
+                        {
+                            movedLeft() ;
+                        }
+                        else if(e.code == "ArrowRight")
+                        {
+                            movedRight() ;
+                        }
+                        else if(e.code == "ArrowUp")
+                        {
+                            movedUp() ;
+                        }
+                        else if(e.code == "ArrowDown")
+                        {
+                            movedDown() ;
+                        }
+                    }) ;
+                }
+                
+            }
             
-            /* IMPORTANT PART OF THIS CODE */
-            document.addEventListener("keyup" ,(e) =>{
-                if(e.code == "ArrowLeft")
-                {
-                    slideLeft() ;
-                    setTwo() ;
-                }
-                else if(e.code == "ArrowRight")
-                {
-                    slideRight() ;
-                    setTwo() ;
-                }
-                else if(e.code == "ArrowUp")
-                {
-                    slideUp() ;
-                    setTwo() ;
-                }
-                else if(e.code == "ArrowDown")
-                {
-                    slideDown() ;
-                    setTwo() ;
-                }
-                document.getElementById("score").innerText = score ;
-            });
-            
+
+            function movedUp()
+            {
+                slideUp() ;
+                setTwo() ;
+            }
+
+
+            function movedDown()
+            {
+                slideDown() ;
+                setTwo() ;
+            }
+
+
+            function movedRight()
+            {
+                slideRight() ;
+                setTwo() ;
+            }
+
+
+            function movedLeft()
+            {
+                slideLeft() ;
+                setTwo() ;
+            }
+
             
             function slideLeft()
             {
@@ -244,7 +292,6 @@
                     {
                         row[i] *= 2 ;
                         row[i+1] = 0 ;
-                        score += row[i] ;
                     } /*[2,2,2] ==> [4,0,2] */
                 }
                 
@@ -331,6 +378,7 @@
                 {
                     return ;
                 }
+                
                 let found = false ;
                 while(!(found))
                 {
@@ -352,6 +400,7 @@
                         found = true ;
                    }
                 }
+
             }
 
 
@@ -369,7 +418,7 @@
                 }
                 return false ;
             }
-
+            
 
         </script>
 
@@ -377,12 +426,18 @@
     <body>
         
         <h1>2048 By Rishab</h1>
-        <hr>
-        <h2>Score : <span id="score">0</span></h2>
-        <!--To display 0 on the same line span is used instead of p (p tag goes to the next line).-->
+        <hr><br>
         
-        <div id="board"></div>
+        <div id="board"></div><br>
+        
+        <script>
 
+            device_checking() ;
+            /*
+             * This function is called here as the buttons needs to be inserted (if need) at the button. 
+             */
+        
+        </script>
     </body>
 
 </html>
