@@ -15,6 +15,7 @@
         <title>2048</title>
         <meta name = "viewport" content="width=device-width, initial-scale=1.0">
         <meta charset = "UTF-8">
+        <link rel = "shortcut icon" type = "image/png" href = "../Icons/letter-r.png">
         
         <!-- CSS Code -->
         <style>
@@ -127,6 +128,15 @@
 
         <!-- JavaScript Code -->
         <script>
+
+            let docTitle = document.title ;
+            window.addEventListener("blur", () => {
+                document.title = "Thanks For Visiting - Rishab" ;
+            }) ;
+
+            window.addEventListener("focus", () => {
+                document.title = docTitle ;
+            }) ;
  
             var board ;
             var rows = 4 ;
